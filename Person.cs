@@ -83,10 +83,48 @@ namespace Goose1
             return personShortData;
         }
 
-        /*public string Person::getName()
+        public override bool Equals(object obj)
         {
+            if (obj.GetType() == this.GetType())
+            {
+                if (this.Name == ((Person)obj).Name && this.SecondName == ((Person)obj).SecondName && this.BirthDate == ((Person)obj).BirthDate)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
-        }*/
+        public static bool operator ==(Person pers1, Person pers2)
+        {
+            return pers1.Equals(pers2);
+        }
+        public static bool operator !=(Person pers1, Person pers2)
+        {
+            return !pers1.Equals(pers2);
+        }
 
+        public override int GetHashCode()
+        {
+            const int hashMax = 1000000;
+            int hash = 0;
+            for (int i = 0; i < Name.Length; i++)
+                hash += (int)Name[i] % hashMax;
+            for (int i = 0; i < SecondName.Length; i++)
+                hash += (int)SecondName[i] % hashMax;
+            hash = hash % hashMax;
+            hash += ((BirthDate.Year + BirthDate.Month + BirthDate.Day + BirthDate.Hour + BirthDate.Minute + BirthDate.Second) * 100) % hashMax;
+            return hash;
+        }
+
+        public object DeepCopy()
+        {
+            Person somePers = new Person();
+            somePers.Name = Name;
+            somePers.SecondName = SecondName;
+            System.DateTime newDate = new System.DateTime (BirthDate.Year, BirthDate.Month, BirthDate.Day, BirthDate.Hour, BirthDate.Minute, BirthDate.Second);
+            somePers.BirthDate = newDate;
+            return somePers;
+        }
     }
 }

@@ -7,100 +7,68 @@ namespace Goose1
     {
         static void Main(string[] args)
         {
-            Magazine goose = new Magazine();
-            Console.WriteLine (goose.ToShortString() + "\n");
-
-            Console.WriteLine(goose[(Frequency)0] + " ");
-            Console.WriteLine(goose[(Frequency)1] + " ");
-            Console.WriteLine(goose[(Frequency)2] + " ");
-
-            goose.Name = "My geese today";
-            goose.Freq = Frequency.monthly;
-            goose.Date = new System.DateTime(2019, 9, 9, 0, 28, 0);
-            goose.Amount = 99999999;
-            Console.WriteLine(goose.ToShortString());       //Как посчитать средний рейтинг, если нет статей?
-            Article[] artList = new Article[3];
-            for (int i = 0; i < 3; i++)
-                artList[i] = new Article();
-            goose.addArticles(artList);
-            Console.WriteLine(goose.ToString());
-
-            /*Console.WriteLine("Insert column and row amount:");
-            int ncolumn, nrow;
-            ncolumn = Convert.ToInt32 (Console.ReadLine());
-            nrow = Convert.ToInt32(Console.ReadLine());
-
-            Magazine[] oneDim = new Magazine[ncolumn * nrow];
-            for (int i = 0; i < oneDim.Length; i++)
+            Edition ed1 = new Edition();
+            Edition ed2 = new Edition();
+            ed2.Name = "Geese are beautiful";
+            ref Edition ed1Ref = ref ed1;
+            ref Edition ed2Ref = ref ed1;
+            Console.WriteLine("First edition: " + ed1.ToString() + " Hash: " + ed1.GetHashCode());
+            Console.WriteLine("Second edition: " + ed2.ToString() + " Hash: " + ed1.GetHashCode());
+            if (ed1 != ed2)           //Как проверить, что ссылки на объекты не равны?
+                Console.WriteLine("Refs don't match");
+            try
             {
-                Magazine someMag = new Magazine();
-                oneDim[i] = someMag;
+                ed1.Amount = -1;
             }
-
-            Magazine[,] twoDim = new Magazine[ncolumn, nrow];
-            for (int i = 0; i < ncolumn; i++)
+            catch(IndexOutOfRangeException ex)
             {
-                for (int j = 0; j < nrow; j++)
-                {
-                    Magazine someMag = new Magazine();
-                    twoDim[i, j] = someMag;
-                }
+                Console.WriteLine(ex);
             }
+            Magazine myMag = new Magazine();
+            Person pers1 = new Person();
+            Person pers2 = new Person("Igor", "Murashev", new DateTime(2019, 10, 8, 17, 42, 0));
+            Person pers3 = new Person("SerGey", "Pogranichnyi", new DateTime(2019, 10, 8, 20, 42, 0));
 
-            Magazine[][] ladderDim = new Magazine[ncolumn][];
-            for (int i = 0; i < ncolumn; i++)
+            Article art1 = new Article();
+            Article art2 = new Article(pers3, "My little gosling", 9.99);
+            myMag.addArticles(art1, art2);
+
+            myMag.addEditors(pers1, pers2);
+            Console.WriteLine (myMag.ToString());
+
+            Console.WriteLine(myMag.Eq);
+            Console.WriteLine("\n");
+            Magazine newMag = (Magazine)myMag.DeepCopy();
+            myMag.Name = "Goose";
+            myMag.Amount = 99999999;
+            myMag.Date = new DateTime(2019, 10, 8, 0, 8, 0);
+            Console.WriteLine("Object copy: " + newMag.ToString());
+            Console.WriteLine("Object: " + myMag.ToString());
+            /*foreach (Article art in myMag.getRatedArts(3.5))
             {
-                Magazine[] oneDimInternal = new Magazine[nrow];
-                for (int j = 0; j < nrow; j++)
-                {
-                    oneDimInternal[j] = new Magazine();                    
-                }
-                ladderDim[i] = oneDimInternal;
+                Console.WriteLine(art);
             }
-
-            System.Diagnostics.Stopwatch SW = new System.Diagnostics.Stopwatch();
-            SW.Start();
-            for (int i = 0; i < ncolumn * nrow; i++)
+            Console.WriteLine("\n");
+            foreach (Article art in myMag.getNamedArts("Geese"))
             {
-                oneDim[i].Amount = 10000;
+                Console.WriteLine(art);
             }
-            SW.Stop();
-            Console.WriteLine("Running time for one dimension:");
-            Console.Write (SW.ElapsedMilliseconds);
-            Console.Write('\n');
-
-            SW.Restart();
-            for (int i = 0; i < ncolumn; i++)
+            Console.WriteLine("!!\n");*/
+            Console.WriteLine("\nThird party publishers articles:");
+            foreach (Article artThirdPartyAuthor in myMag.thirdPartyPublishers())
             {
-                for (int j = 0; j < nrow; j++)
-                    twoDim[i, j].Amount = 10000;
+                Console.WriteLine("\t" + artThirdPartyAuthor);
             }
-            SW.Stop();
-            Console.WriteLine("Running time for two dimension:");
-            Console.Write(SW.ElapsedMilliseconds);
-            Console.Write('\n');
-
-            SW.Restart();
-            for (int i = 0; i < ncolumn; i++)
+            Console.WriteLine("\nEditors publishers articles:");
+            foreach (Article publisherAuthor in myMag.editorsPublishers())
             {
-                for (int j = 0; j < nrow; j++)
-                    ladderDim[i][j].Amount = 10000;
+                Console.WriteLine("\t" + publisherAuthor);
             }
-            SW.Stop();
-            Console.WriteLine("Running time for ladder dimension:");
-            Console.Write(SW.ElapsedMilliseconds);
-            Console.Write('\n');*/
-
-            /*//Console.WriteLine("Hello World!");
-            Person Aynur = new Person();
-            Aynur.YearDate = 2000;
-            Console.WriteLine (Aynur.ToString());
-            Console.WriteLine(Aynur.ToShortString());
-
-            Frequency a = Frequency.monthly;
-            //Frequency a = (Frequency)1;
-            */
-
+            Console.WriteLine("\nEditors not publishers:");
+            foreach (Person editorNotAuthor in myMag.editorsNoPublishers())
+            {
+                Console.WriteLine("\t" + editorNotAuthor);
+            }
         }
     }
 }

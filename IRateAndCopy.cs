@@ -4,10 +4,9 @@ using System.Text;
 
 namespace Goose1
 {
-    public enum Frequency
+    interface IRateAndCopy
     {
-        weekly,
-        monthly,
-        yearly,
+        double Rating { get; }
+        object DeepCopy();
     }
 }
