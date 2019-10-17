@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Goose1
 {
-    public class Magazine : Edition, IRateAndCopy, System.Collections.IEnumerable, IComparer<Magazine>
+    public class Magazine : MagazineCollection, IRateAndCopy, System.Collections.IEnumerable, IComparer<Magazine>
     {
         /*string name;
         System.DateTime date;
@@ -343,9 +343,11 @@ namespace Goose1
         {
             if (mag2.GetType() != mag1.GetType())
                 throw new System.ArgumentException("Differnt types of argument, CompareTo, Magazine");
-            if (mag2.IntermedRate > mag1.IntermedRate)
-                return mag2.IntermedRate;
-            return mag1.IntermedRate;
+            if (mag2.Date > mag1.Date)
+                return 1;
+            if (mag2.Date == mag1.Date)
+                return 0;
+            return -1;
         }
     }
 }

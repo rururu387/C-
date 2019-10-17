@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Goose1
 {
-    class MagazineCollection
+    public class MagazineCollection : Edition
     {
         System.Collections.Generic.List<Magazine> magazineList;
         public void AddDefaults(int addAmount)
@@ -49,7 +50,7 @@ namespace Goose1
         public void sortDate()
         {
             if (magazineList != null)
-                magazineList.Sort((x, y)=>y.Compare(x, y));
+                magazineList.Sort((x, y) => y.Compare(x, y));
             else
                 throw new Exception("Невозможно сравнить два объекта");
         }
@@ -61,13 +62,25 @@ namespace Goose1
             else
                 throw new Exception("Невозможно сравнить два объекта");
         }
-        double maxIntremedRating
+        double  MaxIntremedRating
         {
             get
             {
-
-                return System.Linq.Enumerable.Max(magazineList, );
+                return magazineList.Max(someMagazine => someMagazine.IntermedRate);     //(x, y) => CompareIntermedRating(x, y));
             }
+        }
+        IEnumerable<Magazine> FrequencyMagazine
+        {
+            get
+            {
+                System.Collections.Generic.List<Magazine> magazineMonthly = new List<Magazine>();
+                magazineMonthly.AddRange(magazineList.Where(someMagazine => someMagazine.Freq == Frequency.monthly));
+                return magazineMonthly;
+            }
+        }
+        List<Magazine> RatingGroup(double value)
+        {
+
         }
     }
 }
