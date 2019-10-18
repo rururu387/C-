@@ -80,7 +80,9 @@ namespace Goose1
         }
         List<Magazine> RatingGroup(double value)
         {
-
+            System.Collections.Generic.List<Magazine> magazineHigherRated = new List<Magazine>();
+            magazineHigherRated = magazineList.FindAll(mag => mag.IntermedRate > value).ToList();           //Как имелось ввиду???? Очень долго пытался понять
+            return magazineHigherRated;
         }
     }
 }

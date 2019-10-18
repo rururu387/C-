@@ -10,7 +10,7 @@ namespace Goose1
         System.DateTime date;
         int amount;
         Article []artList;*/
-        Frequency freq;
+        public Frequency freq;
 
         public System.Collections.Generic.List<Article> artList;
         public System.Collections.Generic.List<Person> personList;
