@@ -7,7 +7,48 @@ namespace Goose1
     {
         static void Main(string[] args)
         {
-            Edition ed1 = new Edition();
+            Magazine myMag = new Magazine();
+            Person pers1 = new Person();
+            Person pers2 = new Person("Igor", "Murashev", new DateTime(2019, 10, 8, 17, 42, 0));
+            Person pers3 = new Person("SerGey", "Pogranichnyi", new DateTime(2019, 10, 8, 20, 42, 0));
+            Article art1 = new Article();
+            Article art2 = new Article(pers3, "My little gosling", 9.99);
+            myMag.addArticles(art1, art2);
+            myMag.addEditors(pers1, pers2);
+            myMag.Name = "myGoose";
+            myMag.Date = new System.DateTime(2019, 10, 19, 14, 3, 00);
+            myMag.Amount = 88888888;
+
+            MagazineCollection magCollection = new MagazineCollection();
+            magCollection.AddDefaultMagazines(5);
+
+            magCollection.AddMagazines(myMag);
+
+            string str = magCollection.ToString();
+            Console.WriteLine(str);
+
+            magCollection.sortEdition();
+            str = magCollection.ToString();
+            Console.WriteLine(str);
+            magCollection.sortDate();
+            str = magCollection.ToString();
+            Console.WriteLine(str);
+            magCollection.sortAmount();
+            str = magCollection.ToString();
+            Console.WriteLine(str);
+
+            Console.WriteLine(magCollection.MaxIntremedRating);
+            Console.WriteLine("!!!");
+            MagazineCollection sortedFreqColl = new MagazineCollection (magCollection.FrequencyMagazine);
+            Console.WriteLine(sortedFreqColl.ToString());
+            Console.WriteLine("!!!");
+            MagazineCollection sortedRatingColl = new MagazineCollection(magCollection.RatingGroup(0));
+            Console.WriteLine(sortedRatingColl.ToString());
+
+            TestCollections test1 = new TestCollections(4000000, 4000000, 4000000, 4000000);
+            test1.countTime(3999900);
+
+            /*Edition ed1 = new Edition();
             Edition ed2 = new Edition();
             ed2.Name = "Geese are beautiful";
             ref Edition ed1Ref = ref ed1;
@@ -53,7 +94,7 @@ namespace Goose1
             {
                 Console.WriteLine(art);
             }
-            Console.WriteLine("!!\n");*/
+            Console.WriteLine("!!\n");
             Console.WriteLine("\nThird party publishers articles:");
             foreach (Article artThirdPartyAuthor in myMag.thirdPartyPublishers())
             {
@@ -68,7 +109,7 @@ namespace Goose1
             foreach (Person editorNotAuthor in myMag.editorsNoPublishers())
             {
                 Console.WriteLine("\t" + editorNotAuthor);
-            }
+            }*/
         }
     }
 }

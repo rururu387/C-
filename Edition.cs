@@ -11,8 +11,6 @@ namespace Goose1
         protected int amount;
         public int CompareTo(object obj)
         {
-            if (obj.GetType() == this.GetType())
-                throw new System.ArgumentException("CompareTo type didn't match");
             return this.Name.CompareTo(((Edition)obj).Name);
         }
         public int Compare(Edition ed1, Edition ed2)

@@ -8,7 +8,20 @@ namespace Goose1
     public class MagazineCollection : Edition
     {
         System.Collections.Generic.List<Magazine> magazineList;
-        public void AddDefaults(int addAmount)
+        public MagazineCollection()
+        {
+            magazineList = new List<Magazine>();
+        }
+        public MagazineCollection(List<Magazine> magList)
+        {
+            magazineList = new List<Magazine>();
+            magazineList.AddRange(magList);
+            /*for (int i = 0; i < magList.Count; i++)
+            {
+                magazineList.Add(magList[i]);
+            }*/
+        }
+        public void AddDefaultMagazines(int addAmount)
         {
             for (int i = 0; i < addAmount; i++)
             {
@@ -26,7 +39,8 @@ namespace Goose1
             string str = "Magazine list contains:\n";
             for (int i = 0; i < magazineList.Count; i++)
             {
-                str += i + ":\n\n" + magazineList[i].ToString();
+                str += "\t\t\t\t" + i + ")\n\n" + magazineList[i].ToString();
+                str += "\n\n\n\n";
                 //That's bad
             }
             return str;
@@ -62,14 +76,14 @@ namespace Goose1
             else
                 throw new Exception("Невозможно сравнить два объекта");
         }
-        double  MaxIntremedRating
+        public double MaxIntremedRating
         {
             get
             {
                 return magazineList.Max(someMagazine => someMagazine.IntermedRate);     //(x, y) => CompareIntermedRating(x, y));
             }
         }
-        IEnumerable<Magazine> FrequencyMagazine
+        public List<Magazine> FrequencyMagazine
         {
             get
             {
@@ -78,7 +92,7 @@ namespace Goose1
                 return magazineMonthly;
             }
         }
-        List<Magazine> RatingGroup(double value)
+        public List<Magazine> RatingGroup(double value)
         {
             System.Collections.Generic.List<Magazine> magazineHigherRated = new List<Magazine>();
             magazineHigherRated = magazineList.FindAll(mag => mag.IntermedRate > value).ToList();           //Как имелось ввиду???? Очень долго пытался понять

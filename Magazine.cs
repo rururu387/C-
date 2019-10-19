@@ -134,6 +134,10 @@ namespace Goose1
             //amount = 10000000;
             artList = new System.Collections.Generic.List<Article>();
             personList = new System.Collections.Generic.List<Person>();
+            artList.Add(new Article());
+            artList.Add(new Article());
+            personList.Add(new Person());
+            personList.Add(new Person());
             /*artList = new Article[n];
             for (int i = 0; i < n; i++)
             {
@@ -165,12 +169,12 @@ namespace Goose1
                 return personList;
             }
         }
-        public void addArticles(params Article []art)
+        public void addArticles(params Article[] art)
         {
             for (int i = 0; i < art.Length; i++)
                 ArtList.Add(art[i]);
         }
-        public void addEditors(params Person []pers)
+        public void addEditors(params Person[] pers)
         {
             for (int i = 0; i < pers.Length; i++)
                 PersonList.Add(pers[i]);
