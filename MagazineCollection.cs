@@ -5,9 +5,73 @@ using System.Text;
 
 namespace Goose1
 {
-    public class MagazineCollection : Edition
+    public class MagazineCollection<TKey>
     {
-        System.Collections.Generic.List<Magazine> magazineList;
+        Dictionary<TKey, Magazine> magazineDictionary;
+        KeySelector<TKey> myKeySelector;
+        public void AddDefaultMagazines(int addAmount)
+        {
+            for (int i = 0; i < addAmount; i++)
+            {
+                Magazine newMag = new Magazine();
+                TKey key = KeySelector(newMag);
+                magazineDictionary.Add(key, newMag);
+            }
+        }
+        public void AddMagazines(params Magazine[] magData)
+        {
+            for (int i = 0; i < magData.Length; i++)
+                magazineDictionary.Add(KeySelector(magData[i]), magData[i]);
+        }
+        public MagazineCollection(KeySelector thisKey)
+        {
+            myKeySelector = thisKey;
+            magazineDictionary = new Dictionary<TKey, Magazine>();
+        }
+        public override string ToString()
+        {
+            string str = "Magazine list contains:\n";
+            int j = 0;
+            foreach (KeyValuePair<TKey, Magazine> i in magazineDictionary)
+            {
+                str += "\t\t\t\t" + j + ")\n\n" + "Key: " + i.Key + "Value: " + i.Value.ToString();
+                str += "\n\n\n\n";
+                //That's bad
+                j++;
+            }
+            return str;
+        }
+        public string ToShortString()
+        {
+            string str = "Magazine list contains:\n";
+            int j = 0;
+            foreach (KeyValuePair<TKey, Magazine> i in magazineDictionary)
+            {
+                str += "\t\t\t\t" + j + ")\n\n" + "Key: " + i.Key + "Value: " + i.Value.ToShortString();
+                str += "\n\n\n\n";
+                //That's bad
+                j++;
+            }
+            return str;
+        }
+        public double MaxIntremedRating
+        {
+            get
+            {
+                if (magazineDictionary.Count == 0)
+                    return 0;
+                return magazineDictionary.Max(someMagazine => someMagazine.Value.IntermedRate);     //(x, y) => CompareIntermedRating(x, y));
+            }
+        }
+        public IEnumerable<KeyValuePair<TKey, Magazine>> frequencyGroupWhere(Frequency value)
+        {
+            return magazineDictionary.Where(someMag => someMag.Value.Freq == value);
+        }
+        public IEnumerable<IGrouping<Frequency, KeyValuePair<TKey, Magazine>>> frequencyGroupBy(Frequency value)
+        {
+            return magazineDictionary.GroupBy(someMag => someMag.Value.Freq);
+        }
+        /*System.Collections.Generic.List<Magazine> magazineList;
         public MagazineCollection()
         {
             magazineList = new List<Magazine>();
@@ -16,34 +80,6 @@ namespace Goose1
         {
             magazineList = new List<Magazine>();
             magazineList.AddRange(magList);
-            /*for (int i = 0; i < magList.Count; i++)
-            {
-                magazineList.Add(magList[i]);
-            }*/
-        }
-        public void AddDefaultMagazines(int addAmount)
-        {
-            for (int i = 0; i < addAmount; i++)
-            {
-                Magazine newMag = new Magazine();
-                magazineList.Add(newMag);
-            }
-        }
-        public void AddMagazines(params Magazine []magData)
-        {
-            for (int i = 0; i < magData.Length; i++)
-                magazineList.Add(magData[i]);
-        }
-        public override string ToString()
-        {
-            string str = "Magazine list contains:\n";
-            for (int i = 0; i < magazineList.Count; i++)
-            {
-                str += "\t\t\t\t" + i + ")\n\n" + magazineList[i].ToString();
-                str += "\n\n\n\n";
-                //That's bad
-            }
-            return str;
         }
         public string ToShortString ()
         {
@@ -76,13 +112,6 @@ namespace Goose1
             else
                 throw new Exception("Невозможно сравнить два объекта");
         }
-        public double MaxIntremedRating
-        {
-            get
-            {
-                return magazineList.Max(someMagazine => someMagazine.IntermedRate);     //(x, y) => CompareIntermedRating(x, y));
-            }
-        }
         public List<Magazine> FrequencyMagazine
         {
             get
@@ -97,6 +126,6 @@ namespace Goose1
             System.Collections.Generic.List<Magazine> magazineHigherRated = new List<Magazine>();
             magazineHigherRated = magazineList.FindAll(mag => mag.IntermedRate > value).ToList();           //Как имелось ввиду???? Очень долго пытался понять
             return magazineHigherRated;
-        }
+        }*/
     }
 }

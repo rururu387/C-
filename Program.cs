@@ -18,6 +18,28 @@ namespace Goose1
             myMag.Name = "myGoose";
             myMag.Date = new System.DateTime(2019, 10, 19, 14, 3, 00);
             myMag.Amount = 88888888;
+            myMag.sortArtName();
+            Console.WriteLine(myMag.ToString());
+            myMag.sortArtAuthorSecondName();
+            Console.WriteLine(myMag.ToString());
+            myMag.sortRating();
+            Console.WriteLine(myMag.ToString());
+            public delegate int KeySelector(Magazine mg);
+            MagazineCollection<TKey> = new MagazineCollection<TKey>();
+
+
+
+            /*Magazine myMag = new Magazine();
+            Person pers1 = new Person();
+            Person pers2 = new Person("Igor", "Murashev", new DateTime(2019, 10, 8, 17, 42, 0));
+            Person pers3 = new Person("SerGey", "Pogranichnyi", new DateTime(2019, 10, 8, 20, 42, 0));
+            Article art1 = new Article();
+            Article art2 = new Article(pers3, "My little gosling", 9.99);
+            myMag.addArticles(art1, art2);
+            myMag.addEditors(pers1, pers2);
+            myMag.Name = "myGoose";
+            myMag.Date = new System.DateTime(2019, 10, 19, 14, 3, 00);
+            myMag.Amount = 88888888;
 
             MagazineCollection magCollection = new MagazineCollection();
             magCollection.AddDefaultMagazines(5);
@@ -46,7 +68,7 @@ namespace Goose1
             Console.WriteLine(sortedRatingColl.ToString());
 
             TestCollections test1 = new TestCollections(4000000, 4000000, 4000000, 4000000);
-            test1.countTime(3999900);
+            test1.countTime(3999900);*/
 
             /*Edition ed1 = new Edition();
             Edition ed2 = new Edition();
