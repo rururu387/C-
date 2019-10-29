@@ -7,25 +7,24 @@ namespace Goose1
 {
     public class MagazineCollection<TKey>
     {
+        public delegate TKey KeySelector(Magazine mg);
         Dictionary<TKey, Magazine> magazineDictionary;
-        KeySelector<TKey> myKeySelector;
-        public void AddDefaultMagazines(int addAmount)
+        public void AddDefaultMagazines(int addAmount, KeySelector method)
         {
             for (int i = 0; i < addAmount; i++)
             {
-                Magazine newMag = new Magazine();
-                TKey key = KeySelector(newMag);
+                Magazine newMag = new Magazine(i.ToString(), ((Frequency)(i % 3)), new DateTime(i % 2000 + 1, i % 12, i % 28, i % 24, i % 60, i % 60), i % 10000);
+                TKey key = method(newMag);
                 magazineDictionary.Add(key, newMag);
             }
         }
-        public void AddMagazines(params Magazine[] magData)
+        public void AddMagazines(KeySelector method, params Magazine[] magData)
         {
             for (int i = 0; i < magData.Length; i++)
-                magazineDictionary.Add(KeySelector(magData[i]), magData[i]);
+                magazineDictionary.Add(method(magData[i]), magData[i]);
         }
-        public MagazineCollection(KeySelector thisKey)
+        public MagazineCollection()
         {
-            myKeySelector = thisKey;
             magazineDictionary = new Dictionary<TKey, Magazine>();
         }
         public override string ToString()
@@ -34,7 +33,7 @@ namespace Goose1
             int j = 0;
             foreach (KeyValuePair<TKey, Magazine> i in magazineDictionary)
             {
-                str += "\t\t\t\t" + j + ")\n\n" + "Key: " + i.Key + "Value: " + i.Value.ToString();
+                str += "\t\t\t\t" + j + ")\n\n" + "Key: " + i.Key + "\tValue: " + i.Value.ToString();
                 str += "\n\n\n\n";
                 //That's bad
                 j++;
@@ -67,9 +66,12 @@ namespace Goose1
         {
             return magazineDictionary.Where(someMag => someMag.Value.Freq == value);
         }
-        public IEnumerable<IGrouping<Frequency, KeyValuePair<TKey, Magazine>>> frequencyGroupBy(Frequency value)
+        public IEnumerable<IGrouping<Frequency, KeyValuePair<TKey, Magazine>>> FrequencyGroupBy
         {
-            return magazineDictionary.GroupBy(someMag => someMag.Value.Freq);
+            get
+            {
+                return magazineDictionary.GroupBy(someMag => someMag.Value.Freq);
+            }
         }
         /*System.Collections.Generic.List<Magazine> magazineList;
         public MagazineCollection()

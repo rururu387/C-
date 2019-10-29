@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace Goose1
 {
@@ -10,7 +12,7 @@ namespace Goose1
             Magazine myMag = new Magazine();
             Person pers1 = new Person();
             Person pers2 = new Person("Igor", "Murashev", new DateTime(2019, 10, 8, 17, 42, 0));
-            Person pers3 = new Person("SerGey", "Pogranichnyi", new DateTime(2019, 10, 8, 20, 42, 0));
+            Person pers3 = new Person("Sergey", "Pogranichnyi", new DateTime(2019, 10, 8, 20, 42, 0));
             Article art1 = new Article();
             Article art2 = new Article(pers3, "My little gosling", 9.99);
             myMag.addArticles(art1, art2);
@@ -24,9 +26,39 @@ namespace Goose1
             Console.WriteLine(myMag.ToString());
             myMag.sortRating();
             Console.WriteLine(myMag.ToString());
-            public delegate int KeySelector(Magazine mg);
-            MagazineCollection<TKey> = new MagazineCollection<TKey>();
-
+            string KeySelector(Magazine mg)
+            {
+                return mg.Name + mg.Date.ToString();
+            }
+            MagazineCollection <string> someMagCollection = new MagazineCollection<string>();
+            Magazine myMag2 = new Magazine();
+            someMagCollection.AddMagazines(KeySelector, myMag, myMag2);
+            Console.WriteLine(someMagCollection.ToString());
+            Console.WriteLine(someMagCollection.MaxIntremedRating);
+            int j = 0;
+            string str = "All magazines from collection where Frequency is monthly:\n";
+            foreach (KeyValuePair<string, Magazine> somePair in someMagCollection.frequencyGroupWhere(Frequency.monthly))
+            {
+                str += "\t\t\t\t" + j + ")\n\n" + "Key: " + somePair.Key + "\tValue: " + somePair.Value.ToString();
+                str += "\n\n\n\n";
+                //That's bad
+                j++;
+            }
+            Console.WriteLine(str);
+            j = 0;
+            str = "Grouped magazines by frequency:\n";
+            IGrouping<int, KeyValuePair<string, Magazine>> groups = someMagCollection.FrequencyGroupBy;
+            IEnumerable<KeyValuePair<string, Magazine>> smths = groups.SelectMany(group => group);
+            List<KeyValuePair<string, Magazine>> newList = smths.ToList();
+            /*foreach (IGrouping <string, KeyValuePair<string, Magazine>> somePair in someMagCollection.FrequencyGroupBy)
+            {
+                str += "\t\t\t\t" + j + ")\n\n" + "Key: " + somePair.Key + "\tValue: " + somePair.Value.ToString();
+                str += "\n\n\n\n";
+                //That's bad
+                j++;
+            }*/
+            //Console.WriteLine(someMagCollection.frequencyGroupWhere(Frequency.monthly).ToString());
+            //Console.WriteLine(someMagCollection.FrequencyGroupBy);
 
 
             /*Magazine myMag = new Magazine();
