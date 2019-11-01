@@ -64,7 +64,15 @@ namespace Goose1
                 str += j.ToString();
                 str += "\n\n\n";
             }
-            Console.WriteLine(str);
+            TestCollections someMagCollection2 = new TestCollections(3000000, 3000000, 3000000, 3000000);
+            someMagCollection2.countTime(0);
+            Console.WriteLine("The first element:\n");
+            someMagCollection2.countTime(1500000);
+            Console.WriteLine("Element in the middle:\n");
+            someMagCollection2.countTime(300000);
+            Console.WriteLine("The last element:\n");
+            someMagCollection2.countTime(300001);
+            Console.WriteLine("str");
         }
     }
 }

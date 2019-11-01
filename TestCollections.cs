@@ -47,12 +47,22 @@ namespace Goose1
             SW.Stop();
             Console.WriteLine("Duration of search of all in List<String>:" + SW.ElapsedMilliseconds + " Miliseconds");
             SW.Reset();
+            Magazine tempMag;
             SW.Start();
-            Magazine tempMag = testKeyDictionary[someEdKey];
+            try
+            {
+                tempMag = testKeyDictionary[someEdKey];
+            }
+            catch
+            {}
             SW.Stop();
             Console.WriteLine("Duration of search of all in Dictionary<Edition, Magazine>:" + SW.ElapsedMilliseconds + " Miliseconds");
             SW.Restart();
-            tempMag = testStrDictionary[i.ToString()];
+            try
+            {
+                tempMag = testStrDictionary[i.ToString()];
+            }
+            catch {}
             SW.Stop();
             Console.WriteLine("Duration of search of all in Dictionary<String, Magazine>:" + SW.ElapsedMilliseconds + " Miliseconds");
         }
