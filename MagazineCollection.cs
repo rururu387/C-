@@ -7,25 +7,55 @@ namespace Goose1
 {
     public class MagazineCollection<TKey>
     {
+        public delegate void MagazinesChangedHandler<TKey>(object source, MagazinesChangedEventArgs<TKey> args);
         public delegate TKey KeySelector(Magazine mg);
         Dictionary<TKey, Magazine> magazineDictionary;
+        public event MagazinesChangedHandler<TKey> MagazinesChanged;
+        public string CollectionName
+        {
+            get;
+            set;
+        }
+        bool Replace (Magazine mold, Magazine mnew)
+        {
+            IEnumerable<KeyValuePair<TKey, Magazine>> oldMags = magazineDictionary.Where(x => x.Value == mold);
+            if (!oldMags.Any())
+                return false;
+            foreach (KeyValuePair <TKey, Magazine> pair in oldMags)
+            {
+                MagazinesChanged(this, new MagazinesChangedEventArgs<TKey>(CollectionName, Update.replace, "Replace", pair.Key));
+            }
+            oldMags.Select(x => x = new KeyValuePair<TKey, Magazine> (x.Key, mnew));
+            return true;
+        }
         public void AddDefaultMagazines(int addAmount, KeySelector method)
         {
             for (int i = 0; i < addAmount; i++)
             {
                 Magazine newMag = new Magazine(i.ToString(), ((Frequency)(i % 3)), new DateTime(i % 2000 + 1, i % 12, i % 28, i % 24, i % 60, i % 60), i % 10000);
                 TKey key = method(newMag);
+                MagazinesChanged(this, new MagazinesChangedEventArgs<TKey>(CollectionName, Update.add, "AddDefaultMagazines", key));
                 magazineDictionary.Add(key, newMag);
             }
         }
         public void AddMagazines(KeySelector method, params Magazine[] magData)
         {
             for (int i = 0; i < magData.Length; i++)
-                magazineDictionary.Add(method(magData[i]), magData[i]);
+            {
+                TKey tempKey = method(magData[i]);
+                magazineDictionary.Add(tempKey, magData[i]);
+                MagazinesChanged(this, new MagazinesChangedEventArgs<TKey>(CollectionName, Update.add, "AddMagazines", tempKey));
+            }
         }
         public MagazineCollection()
         {
             magazineDictionary = new Dictionary<TKey, Magazine>();
+            CollectionName = "Goose collection";
+        }
+        public MagazineCollection(string name)
+        {
+            magazineDictionary = new Dictionary<TKey, Magazine>();
+            CollectionName = name;
         }
         public override string ToString()
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Goose1
@@ -9,7 +10,7 @@ namespace Goose1
     {
         static void Main(string[] args)
         {
-            Magazine myMag = new Magazine();
+            /*Magazine myMag = new Magazine();
             Person pers1 = new Person();
             Person pers2 = new Person("Igor", "Murashev", new DateTime(2019, 10, 8, 17, 42, 0));
             Person pers3 = new Person("Sergey", "Pogranichnyi", new DateTime(2019, 10, 8, 20, 42, 0));
@@ -64,15 +65,40 @@ namespace Goose1
                 str += j.ToString();
                 str += "\n\n\n";
             }
-            TestCollections someMagCollection2 = new TestCollections(3000000, 3000000, 3000000, 3000000);
-            someMagCollection2.countTime(0);
+
+            KeyValuePair<Edition, Magazine> generateElements(int value)
+            {
+                var a = new System.DateTime(value % 9000 + 1, value % 11 + 1, value % 27 + 1, value % 24, value % 60, value * 7 % 60);
+                string str2 = "Goose";
+                str2 += value;
+                Edition someEd = new Edition(str2, new System.DateTime(value % 9000 + 1, value % 11 + 1, value % 27 + 1, value % 24, value % 60, value * 7 % 60), value * 10000);
+                Magazine someMag = (new Magazine(str2, (Frequency)(value % 3), new System.DateTime(value % 9000 + 1, value % 11 + 1, value % 27 + 1, value % 24, value % 60, value * 7 % 60), value * 10000));
+                return new KeyValuePair<Edition, Magazine>(someEd, someMag);
+            }
+            TestCollections<Edition, Magazine> someMagCollection2 = new TestCollections<Edition, Magazine>(300000, 300000, 300000, 300000, generateElements);
             Console.WriteLine("The first element:\n");
-            someMagCollection2.countTime(1500000);
+            someMagCollection2.countTime(0);
             Console.WriteLine("Element in the middle:\n");
-            someMagCollection2.countTime(300000);
+            someMagCollection2.countTime(150000); 
             Console.WriteLine("The last element:\n");
+            someMagCollection2.countTime(300000);
+            Console.WriteLine("Element that does not exist:\n");
             someMagCollection2.countTime(300001);
-            Console.WriteLine("str");
+            Console.WriteLine("str");*/
+
+            Edition someEd2 = new Edition();
+            someEd2.PropertyChanged += editionChanged;
+            someEd2.Date = (new System.DateTime(1, 1, 1 , 1, 1, 1));
+
+            MagazineCollection<string> gooseCollection1 = new MagazineCollection<string>("Goose1");
+            MagazineCollection<string> gooseCollection2 = new MagazineCollection<string>("Goose2");
+            Listener goose1Listener = new Listener();
+            gooseCollection1.MagazinesChanged += goose1Listener;
+
+        }
+        static void editionChanged(object obj, PropertyChangedEventArgs e)
+        {
+            Console.WriteLine(e.PropertyName);
         }
     }
 }

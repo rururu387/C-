@@ -7,7 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="temp\**" />
+    <EmbeddedResource Remove="temp\**" />
+    <None Remove="temp\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="EditNoPublishEnumerator.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C--3.1.zip" />
   </ItemGroup>
 
 </Project>

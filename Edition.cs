@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Goose1
 {
-    public class Edition : System.IComparable, System.Collections.Generic.IComparer<Edition>
+    public class Edition : System.IComparable, System.Collections.Generic.IComparer<Edition>, INotifyPropertyChanged
     {
         protected string name;
         protected System.DateTime date;
         protected int amount;
+        public event PropertyChangedEventHandler PropertyChanged;
         public int CompareTo(object obj)
         {
             return this.Name.CompareTo(((Edition)obj).Name);
@@ -53,6 +55,7 @@ namespace Goose1
             set
             {
                 System.DateTime newDate = new System.DateTime(value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second);
+                PropertyChanged(this, new PropertyChangedEventArgs(string.Format("Date changed to: {0}", newDate)));
                 date = newDate;
             }
         }
@@ -69,6 +72,7 @@ namespace Goose1
                     string str = "Index out of bounds";
                     throw new System.IndexOutOfRangeException(str);
                 }
+                PropertyChanged(this, new PropertyChangedEventArgs(string.Format("Amount changed to: {0}", value)));
                 amount = value;
             }
         }
