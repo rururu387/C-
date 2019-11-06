@@ -86,19 +86,29 @@ namespace Goose1
             someMagCollection2.countTime(300001);
             Console.WriteLine("str");*/
 
-            Edition someEd2 = new Edition();
+            /*Edition someEd2 = new Edition();
             someEd2.PropertyChanged += editionChanged;
-            someEd2.Date = (new System.DateTime(1, 1, 1 , 1, 1, 1));
+            someEd2.Date = (new System.DateTime(1, 1, 1 , 1, 1, 1));*/
 
             MagazineCollection<string> gooseCollection1 = new MagazineCollection<string>("Goose1");
             MagazineCollection<string> gooseCollection2 = new MagazineCollection<string>("Goose2");
             Listener goose1Listener = new Listener();
-            gooseCollection1.MagazinesChanged += goose1Listener;
-
-        }
-        static void editionChanged(object obj, PropertyChangedEventArgs e)
-        {
-            Console.WriteLine(e.PropertyName);
+            //MagazinesChangedHandler<string> goose1Listener2 = goose1Listener.MagazinesChanged;
+            gooseCollection1.MagazinesChanged += goose1Listener.MagazinesChanged;
+            string KeySelector(Magazine mg)
+            {
+                return mg.Name + " " + mg.Date.ToString();
+            }
+            gooseCollection1.AddDefaultMagazines(2, KeySelector);
+            DateTime date = new DateTime(2019, 11, 6, 18, 40, 00);
+            gooseCollection1.AddMagazines(KeySelector, new Magazine("In geese world", Frequency.yearly, date, 5555555));
+            gooseCollection1["In geese world " + date.ToString()].Amount = 100000;
+            gooseCollection1["In geese world " + date.ToString()].Name = "Handsome goose";
+            gooseCollection1["In geese world " + date.ToString()].Date = new DateTime(2019, 11, 6, 20, 28, 00);
+            int i = 0;
+            gooseCollection1.Replace(new Magazine(i.ToString(), ((Frequency)(i % 3)), new System.DateTime(i % 9000 + 1, i % 11 + 1, i % 27 + 1, i % 24, i % 60, i * 7 % 60), i * 1000 + i * 100 + i * 10 + i % 1000000), new Magazine());
+            gooseCollection1.Replace(new Magazine("In geese world", Frequency.yearly, date, 5555555), new Magazine());
+            Console.WriteLine(goose1Listener.ToString());
         }
     }
 }

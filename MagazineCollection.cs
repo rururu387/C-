@@ -5,22 +5,47 @@ using System.Text;
 
 namespace Goose1
 {
+    public delegate void MagazinesChangedHandler<TKey>(object source, MagazinesChangedEventArgs<TKey> args);
     public class MagazineCollection<TKey>
     {
-        public delegate void MagazinesChangedHandler<TKey>(object source, MagazinesChangedEventArgs<TKey> args);
         public delegate TKey KeySelector(Magazine mg);
         Dictionary<TKey, Magazine> magazineDictionary;
-        public event MagazinesChangedHandler<TKey> MagazinesChanged;
+        public event MagazinesChangedHandler<TKey> MagazinesChanged = null;
+        public static void editionChanged(object source, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            Console.WriteLine(((Edition)source).Name + " " + e.PropertyName);
+        }
+        public Magazine this[TKey key]
+        {
+            get
+            {
+                return magazineDictionary[key];
+            }
+            set
+            {
+                try
+                {
+                    magazineDictionary[key] = value;
+                    MagazinesChanged(this, new MagazinesChangedEventArgs<TKey>(CollectionName, Update.replace, "Overrided []", key));
+                }
+                catch (KeyNotFoundException)
+                {
+                    MagazinesChanged(this, new MagazinesChangedEventArgs<TKey>(CollectionName, Update.property, "changeMags, magazine not found due to key mismatch", key));
+                }
+            }
+        }
         public string CollectionName
         {
             get;
             set;
         }
-        bool Replace (Magazine mold, Magazine mnew)
+        public bool Replace (Magazine mold, Magazine mnew)
         {
             IEnumerable<KeyValuePair<TKey, Magazine>> oldMags = magazineDictionary.Where(x => x.Value == mold);
             if (!oldMags.Any())
+            {
                 return false;
+            }
             foreach (KeyValuePair <TKey, Magazine> pair in oldMags)
             {
                 MagazinesChanged(this, new MagazinesChangedEventArgs<TKey>(CollectionName, Update.replace, "Replace", pair.Key));
@@ -32,7 +57,7 @@ namespace Goose1
         {
             for (int i = 0; i < addAmount; i++)
             {
-                Magazine newMag = new Magazine(i.ToString(), ((Frequency)(i % 3)), new DateTime(i % 2000 + 1, i % 12, i % 28, i % 24, i % 60, i % 60), i % 10000);
+                Magazine newMag = new Magazine(i.ToString(), ((Frequency)(i % 3)), new System.DateTime(i % 9000 + 1, i % 11 + 1, i % 27 + 1, i % 24, i % 60, i * 7 % 60), i * 1000 + i * 100 + i * 10 + i % 1000000);
                 TKey key = method(newMag);
                 MagazinesChanged(this, new MagazinesChangedEventArgs<TKey>(CollectionName, Update.add, "AddDefaultMagazines", key));
                 magazineDictionary.Add(key, newMag);
@@ -51,6 +76,7 @@ namespace Goose1
         {
             magazineDictionary = new Dictionary<TKey, Magazine>();
             CollectionName = "Goose collection";
+            //MagazinesChanged = Listener.MagazinesChanged();
         }
         public MagazineCollection(string name)
         {
@@ -115,7 +141,7 @@ namespace Goose1
         }
         public string ToShortString ()
         {
-            string str = "Magazine contains (shortly):";
+            string str = "Magazine contains (shortly):"
             for (int i = 0; i < magazineList.Count; i++)
             {
                 str += i + ":\n\n" + "Articles amount:\t" + magazineList[i].artList.Count + "Authors amount:\t" + magazineList[i].personList.Count + "\tIntermediate rating: " + magazineList[i].IntermedRate;

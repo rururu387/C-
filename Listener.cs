@@ -11,15 +11,19 @@ namespace Goose1
         {
             listEntries = new List<ListEntry>();
         }
-        public void MagazinesChanged(MagazinesChangedEventArgs<Magazine> e)
+        public void MagazinesChanged(object source, MagazinesChangedEventArgs<string> e)
         {
-            listEntries.Add(new ListEntry(e.ElementKey.ToString(), e.Status, e.EventSourceFunc, e.ElementKey.ToString()));
+            MagazineCollection<string> a = new MagazineCollection<string>();
+            if (source.GetType() != a.GetType())
+                throw new FormatException("Event couldn't be handled");
+            if (source.GetType() == a.GetType())
+                listEntries.Add(new ListEntry(e.ElementKey.ToString(), e.Status, ((MagazineCollection<string>)source).CollectionName, e.ElementKey.ToString()));
         }
         public override string ToString()
         {
             string str = "";
             int i = 0;
-            listEntries.ForEach(x => str += i++ + x.ToString() + "\n");
+            listEntries.ForEach(x => str += i++ + ":\t" + x.ToString() + "\n");
             return str;
         }
     }

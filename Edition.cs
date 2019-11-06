@@ -25,6 +25,7 @@ namespace Goose1
         }
         public Edition()
         {
+            PropertyChanged = MagazineCollection<string>.editionChanged;
             name = "Goose edition";
             date = new System.DateTime(2019, 09, 21, 15, 46, 53);
             amount = 100000;
@@ -43,6 +44,7 @@ namespace Goose1
             }
             set
             {
+                PropertyChanged(this, new PropertyChangedEventArgs(string.Format("Name changed to: {0}", value)));
                 name = value;
             }
         }
