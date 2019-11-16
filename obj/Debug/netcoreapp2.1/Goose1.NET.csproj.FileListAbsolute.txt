@@ -1,0 +1,10 @@
+C:\Users\Лаврентий Гусев\source\repos\Goose1.NET\Goose1.NET\bin\Debug\netcoreapp2.1\Goose1.NET.deps.json
+C:\Users\Лаврентий Гусев\source\repos\Goose1.NET\Goose1.NET\bin\Debug\netcoreapp2.1\Goose1.NET.runtimeconfig.json
+C:\Users\Лаврентий Гусев\source\repos\Goose1.NET\Goose1.NET\bin\Debug\netcoreapp2.1\Goose1.NET.runtimeconfig.dev.json
+C:\Users\Лаврентий Гусев\source\repos\Goose1.NET\Goose1.NET\bin\Debug\netcoreapp2.1\Goose1.NET.dll
+C:\Users\Лаврентий Гусев\source\repos\Goose1.NET\Goose1.NET\bin\Debug\netcoreapp2.1\Goose1.NET.pdb
+C:\Users\Лаврентий Гусев\source\repos\Goose1.NET\Goose1.NET\obj\Debug\netcoreapp2.1\Goose1.NET.csprojAssemblyReference.cache
+C:\Users\Лаврентий Гусев\source\repos\Goose1.NET\Goose1.NET\obj\Debug\netcoreapp2.1\Goose1.NET.AssemblyInfoInputs.cache
+C:\Users\Лаврентий Гусев\source\repos\Goose1.NET\Goose1.NET\obj\Debug\netcoreapp2.1\Goose1.NET.AssemblyInfo.cs
+C:\Users\Лаврентий Гусев\source\repos\Goose1.NET\Goose1.NET\obj\Debug\netcoreapp2.1\Goose1.NET.dll
+C:\Users\Лаврентий Гусев\source\repos\Goose1.NET\Goose1.NET\obj\Debug\netcoreapp2.1\Goose1.NET.pdb

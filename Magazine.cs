@@ -4,12 +4,8 @@ using System.Text;
 
 namespace Goose1
 {
-    public class Magazine : MagazineCollection, IRateAndCopy, System.Collections.IEnumerable, IComparer<Magazine>
+    public class Magazine : Edition, IRateAndCopy, System.Collections.IEnumerable, IComparer<Magazine>
     {
-        /*string name;
-        System.DateTime date;
-        int amount;
-        Article []artList;*/
         public Frequency freq;
 
         public System.Collections.Generic.List<Article> artList;
@@ -23,13 +19,20 @@ namespace Goose1
             artList = new System.Collections.Generic.List<Article>();
             personList = new System.Collections.Generic.List<Person>();
         }
-        /*public System.Collections.IEnumerator GetEnumerator(int a)
+        public void sortArtName()
         {
-            if ()
-            yield return ;
-            //return new EditPublishEnumerator(this);
-            //return new EditNoPublishEnumerator(this);
-        }*/
+            Article artComparer = new Article();
+            artList.Sort(0, artList.Count, artComparer);
+        }
+        public void sortArtAuthorSecondName()
+        {
+            artList.Sort();
+        }
+        public void sortRating()
+        {
+            ArticleCompareName artComparer = new ArticleCompareName();
+            artList.Sort(0, artList.Count, artComparer);
+        }
         public System.Collections.IEnumerator GetEnumerator()
         {
             Console.WriteLine("&&&&!!!&&&");
@@ -97,48 +100,15 @@ namespace Goose1
             }
             yield break;
         }
-        /*public class MagazineEnumerator : System.Collections.IEnumerator
-        {
-            private Magazine myMag;
-            private int index = -1;
-            public MagazineEnumerator(Magazine mag)
-            {
-                myMag = mag;
-            }
-            public bool MoveNext()
-            {
-                if (index + 1 >= myMag.artList.Count)
-                {
-                    return false;
-                }
-                index++;
-                return true;
-            }
-            public object Current
-            {
-                get
-                {
-                    return myMag.artList[index];
-                }
-            }
-            public void Reset()
-            {
-                index = -1;
-            }
-        }*/
         public Magazine() : base()
         {
-            //name = "Geese on weekends";
             freq = (Frequency)0;
-            //date = new System.DateTime(2019, 8, 9, 1, 0, 0);
-            //amount = 10000000;
             artList = new System.Collections.Generic.List<Article>();
             personList = new System.Collections.Generic.List<Person>();
-            /*artList = new Article[n];
-            for (int i = 0; i < n; i++)
-            {
-                artList[i] = new Article();
-            }*/
+            artList.Add(new Article());
+            artList.Add(new Article());
+            personList.Add(new Person());
+            personList.Add(new Person());
         }
         public Frequency Freq
         {
@@ -165,12 +135,12 @@ namespace Goose1
                 return personList;
             }
         }
-        public void addArticles(params Article []art)
+        public void addArticles(params Article[] art)
         {
             for (int i = 0; i < art.Length; i++)
                 ArtList.Add(art[i]);
         }
-        public void addEditors(params Person []pers)
+        public void addEditors(params Person[] pers)
         {
             for (int i = 0; i < pers.Length; i++)
                 PersonList.Add(pers[i]);
@@ -244,88 +214,6 @@ namespace Goose1
                 base.Amount = ((Edition)value).Amount;
             }
         }
-        /*public IEnumerable<Article> getRatedArts(double rateMin)
-        {
-            for (int i = 0; i < artList.Count; i++)
-            {
-                if (((Article)artList[i]).Rating > rateMin)
-                    yield return (Article)artList[i];
-            }
-        }
-        public IEnumerable<Article> getNamedArts(string name)
-        {
-            for (int i = 0; i < artList.Count; i++)
-            {
-                if (((Article)artList[i]).ArtName.IndexOf(name) != -1)
-                    yield return (Article)artList[i];
-            }
-        }*/
-        /*public System.DateTime Date
-        {
-            get
-            {
-                return date;
-            }
-            set
-            {
-                date = value;
-            }
-        }  
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-            set
-            {
-                name = value;
-            }
-        }
-        public int Amount
-        {
-            get
-            {
-                return amount;
-            }
-            set
-            {
-                amount = value;
-            }
-        }
-        public Article[] ArtList
-        {
-            get
-            {
-                return artList;
-            }
-            set
-            {
-                artList = value;
-            }
-        }
-        public void addArticles (params Article []articleList)
-        {
-            int len1 = artList.Length;
-            int len2 = articleList.Length;
-            Array.Resize(ref artList, len1 + len2);                     //Второй способ
-            Article []artList2 = new Article[len1 + len2];
-            for (int i = 0; i < len1; i++)
-            {
-                artList2[i] = artList[i];
-            }
-            for (int i = len1; i < len1 + len2; i++)
-            {
-                artList[i] = articleList[i - len1];
-            }
-            //artList = artList2;
-        }
-        public string ToShortString()
-        {
-            string s = name + " " + freq + " " + date.ToString() + " " + amount + " " + IntermedRate;
-
-            return s;
-        }*/
         public bool this[Frequency i]
         {
             get

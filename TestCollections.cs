@@ -5,51 +5,61 @@ using System.Text;
 
 namespace Goose1
 {
-    class TestCollections
+    class TestCollections<TKey, TValue>
     {
-        System.Collections.Generic.List<Edition> testListKey;
+        public delegate KeyValuePair<TKey, TValue> generateElements(int value);
+        generateElements elementGen;
+        System.Collections.Generic.List<TKey> testListKey;
         System.Collections.Generic.List<string> testListStr;
-        System.Collections.Generic.Dictionary<Edition, Magazine> testKeyDictionary;
-        System.Collections.Generic.Dictionary<string, Magazine> testStrDictionary;
-        public static Magazine generateMag(int value)
+        System.Collections.Generic.Dictionary<TKey, TValue> testKeyDictionary;
+        System.Collections.Generic.Dictionary<string, TValue> testStrDictionary;
+        public TestCollections (int listKeyAm, int listStrAm, int testKeyDictionaryAm, int testStrDictionaryAm, generateElements _elementGen)
         {
-            string str = "Goose";
-            str += value;
-            Magazine someMag = (new Magazine(str, (Frequency)(value % 3), new System.DateTime(value + 2000, value % 12, value % 28, value % 24, value % 60, value * 7 % 60), value * 10000));
-            return someMag;
-        }//Переменная someMag удалится после выхода. Как в c# вернутьссылку?
-        TestCollections (int listKeyAm, int listStrAm, int testKeyDictionaryAm, int testStrDictionaryAm)
-        {
-            testListKey = new List<Edition>(listKeyAm);
-            testListStr = new List<string>(listStrAm);
-            testKeyDictionary = new Dictionary<Edition, Magazine>(testKeyDictionaryAm);
-            testStrDictionary = new Dictionary<string, Magazine>(testStrDictionaryAm);
+            elementGen = _elementGen;
+            testListKey = new List<TKey>();
+            testListStr = new List<string>();
+            testKeyDictionary = new Dictionary<TKey, TValue>();
+            testStrDictionary = new Dictionary<string, TValue>();
             for (int i = 0; i < listKeyAm; i++)
-                testListKey[i] = new Edition();
+                testListKey.Add(elementGen(i).Key);
             for (int i = 0; i < listStrAm; i++)
-                testListStr[i] = "This is an element of list";
+                testListStr.Add(i.ToString());
             for (int i = 0; i < testKeyDictionaryAm; i++)
-                testListKey[i].Equals(new Tuple <Edition, Magazine> (new Edition(), new Magazine()));
+                testKeyDictionary.Add(elementGen(i).Key, elementGen(i).Value);
             for (int i = 0; i < testStrDictionaryAm; i++)
-                testListKey[i].Equals(new Tuple<string, Magazine>("This is a dictionary key", new Magazine()));
+                testStrDictionary.Add(i.ToString(), elementGen(i).Value);
         }
-        public void countTime()
+        public void countTime(int i)
         {
             System.Diagnostics.Stopwatch SW = new System.Diagnostics.Stopwatch();
-            Edition defaultEd = new Edition();
             SW.Start();
-            testListKey.FindAll(someEd => someEd.Amount == defaultEd.Amount && someEd.Date == defaultEd.Date && someEd.Name == defaultEd.Name);
+            testListKey.FindAll(someEd => someEd.Equals(elementGen(i).Value));
             SW.Stop();
-            Console.WriteLine("Duration of search of all in List<Edition>:");
-            Console.Write(SW.ElapsedMilliseconds + " Miliseconds");
+            Console.WriteLine("Duration of search of all in List<Edition>:" + SW.ElapsedMilliseconds + " Miliseconds");
             SW.Reset();
             SW.Start();
-            testListStr.FindAll(someStr => someStr == "This is an element of list");
+            testListStr.FindAll(someStr => someStr == i.ToString());
             SW.Stop();
-            Console.WriteLine("Duration of search of all in List<Edition>:");
-            Console.Write(SW.ElapsedMilliseconds + " Miliseconds");
+            Console.WriteLine("Duration of search of all in List<String>:" + SW.ElapsedMilliseconds + " Miliseconds");
             SW.Reset();
-            //Доделатб
+            TValue tempMag;
+            SW.Start();
+            try
+            {
+                tempMag = testKeyDictionary[elementGen(i).Key];
+            }
+            catch
+            {}
+            SW.Stop();
+            Console.WriteLine("Duration of search of all in Dictionary<Edition, Magazine>:" + SW.ElapsedMilliseconds + " Miliseconds");
+            SW.Restart();
+            try
+            {
+                tempMag = testStrDictionary[i.ToString()];
+            }
+            catch {}
+            SW.Stop();
+            Console.WriteLine("Duration of search of all in Dictionary<String, Magazine>:" + SW.ElapsedMilliseconds + " Miliseconds");
         }
     }
 }

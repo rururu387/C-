@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Goose1
 {
-    public class Edition : System.IComparable, System.Collections.Generic.IComparer<Edition>
+    public class Edition : System.IComparable, System.Collections.Generic.IComparer<Edition>, INotifyPropertyChanged
     {
         protected string name;
         protected System.DateTime date;
         protected int amount;
+        public event PropertyChangedEventHandler PropertyChanged;
         public int CompareTo(object obj)
         {
-            if (obj.GetType() == this.GetType())
-                throw new System.ArgumentException("CompareTo type didn't match");
             return this.Name.CompareTo(((Edition)obj).Name);
         }
         public int Compare(Edition ed1, Edition ed2)
@@ -25,6 +25,7 @@ namespace Goose1
         }
         public Edition()
         {
+            PropertyChanged = MagazineCollection<string>.editionChanged;
             name = "Goose edition";
             date = new System.DateTime(2019, 09, 21, 15, 46, 53);
             amount = 100000;
@@ -43,6 +44,7 @@ namespace Goose1
             }
             set
             {
+                PropertyChanged(this, new PropertyChangedEventArgs(string.Format("Name changed to: {0}", value)));
                 name = value;
             }
         }
@@ -55,6 +57,7 @@ namespace Goose1
             set
             {
                 System.DateTime newDate = new System.DateTime(value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second);
+                PropertyChanged(this, new PropertyChangedEventArgs(string.Format("Date changed to: {0}", newDate)));
                 date = newDate;
             }
         }
@@ -71,6 +74,7 @@ namespace Goose1
                     string str = "Index out of bounds";
                     throw new System.IndexOutOfRangeException(str);
                 }
+                PropertyChanged(this, new PropertyChangedEventArgs(string.Format("Amount changed to: {0}", value)));
                 amount = value;
             }
         }
