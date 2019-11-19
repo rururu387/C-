@@ -90,7 +90,7 @@ namespace Goose1
             someEd2.PropertyChanged += editionChanged;
             someEd2.Date = (new System.DateTime(1, 1, 1 , 1, 1, 1));*/
 
-            MagazineCollection<string> gooseCollection1 = new MagazineCollection<string>("Goose1");
+            /*MagazineCollection<string> gooseCollection1 = new MagazineCollection<string>("Goose1");
             MagazineCollection<string> gooseCollection2 = new MagazineCollection<string>("Goose2");
             Listener goose1Listener = new Listener();
             //MagazinesChangedHandler<string> goose1Listener2 = goose1Listener.MagazinesChanged;
@@ -108,7 +108,33 @@ namespace Goose1
             int i = 0;
             gooseCollection1.Replace(new Magazine(i.ToString(), ((Frequency)(i % 3)), new System.DateTime(i % 9000 + 1, i % 11 + 1, i % 27 + 1, i % 24, i % 60, i * 7 % 60), i * 1000 + i * 100 + i * 10 + i % 1000000), new Magazine());
             gooseCollection1.Replace(new Magazine("In geese world", Frequency.yearly, date, 5555555), new Magazine());
-            Console.WriteLine(goose1Listener.ToString());
+            Console.WriteLine(goose1Listener.ToString());*/
+            Magazine someMag = new Magazine();
+            //someMag.Save("C:/Users/Лаврентий Гусев/Олег/Goose.bin");
+           Magazine magCpy = Magazine.DeepCopy(someMag);
+            magCpy.Name = "GEESE=)";
+            Console.WriteLine(someMag.ToString());
+            Console.WriteLine(magCpy.ToString());
+            Console.WriteLine("Path to a file: ");
+            //string filepath = Console.ReadLine();
+            string filepath = "C:/Users/Лаврентий Гусев/Олег/Goose.bin";
+            if (!System.IO.File.Exists(filepath))
+            {
+                Console.WriteLine("File didn't exist. It is created now.");
+                System.IO.File.Create(filepath);
+            }
+            else
+            {
+                someMag.Load(filepath);
+            }
+            Console.WriteLine(someMag.ToString());
+            someMag.addFromConsole();
+            someMag.Save(filepath);
+            Console.WriteLine(someMag);
+            Magazine.Load(filepath, someMag);
+            someMag.addFromConsole();
+            Magazine.Save(filepath, someMag);
+            Console.WriteLine(someMag.ToString());
         }
     }
 }

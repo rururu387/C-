@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Goose1
 {
+    [Serializable]
     public class Person
     {
         string name;
