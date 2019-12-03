@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Goose1
 {
+    [Serializable]
     public class Article : IRateAndCopy, IComparable, IComparer<Article>
     {
         public Person Author
@@ -76,6 +77,43 @@ namespace Goose1
             if (obj1.GetType() != obj2.GetType())
                 throw new System.ArgumentException("Couldn't compare objects because they have different types");
             return ((Article)obj1).Author.SecondName.CompareTo(((Article)obj2).Author.SecondName);
+        }
+        public Article getFromConsole()
+        {
+            Console.WriteLine("Enter an article to add in an article list (article's author data: name_second name_Year o birth_Month_Day and then article data: name_rating). Use enter to split data: ");
+            Author.Name = Console.ReadLine();
+            Author.SecondName = Console.ReadLine();
+            bool flag = false;
+            do
+            {
+                try
+                {
+                    flag = false;
+                    Author.BirthDate = Convert.ToDateTime(Console.ReadLine());
+                }
+                catch
+                {
+                    flag = true;
+                    Console.WriteLine("You have entred an unvalid date. Retry:");
+                }
+            }
+            while (flag);
+            ArtName = Console.ReadLine();
+            do
+            {
+                try
+                {
+                    flag = false;
+                    Rating = System.Convert.ToDouble(Console.ReadLine());
+                }
+                catch
+                {
+                    flag = true;
+                    Console.WriteLine("You have entred an unvalid rating. Retry:");
+                }
+            }
+            while (flag);
+            return this;
         }
     }
 }
