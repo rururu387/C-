@@ -5,7 +5,7 @@ namespace Goose3.NET
 {
     class Program
     {
-        [DllImport(@"MyDllSecond.dll", EntryPoint = "mainCpp", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
+        [DllImport(@"someDll.dll", EntryPoint = "mainCpp", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         public static extern long mainCpp(double[] matrixArr, int size, double[] rVal, int rValSize);
         static long c_Block(MatrixC_ myMatrixC_, double[] myArr)
         {
@@ -39,7 +39,7 @@ namespace Goose3.NET
             {
                 for (int j = 0; j < myMatrixCpp.size; j++)
                 {
-                    matrixArr[i * myMatrixCpp.size + j] = myMatrixCpp.getMatrix()[i][j];
+                    matrixArr[i * myMatrixCpp.size + j] = myMatrixCpp.matrix[i][j];
                 }
             }
             Console.WriteLine();
@@ -58,10 +58,9 @@ namespace Goose3.NET
                 switch (action)
                 {
                     case 1:
-                        Console.WriteLine("Size of matrix to solve: ");
+                        Console.WriteLine("*Size of matrix to solve: ");
                         int amount = input.getInt();
                         MatrixC_ myMatrix = new MatrixC_(amount);
-
                         Random rnd = new Random();
                         double[] myArr = new double[amount];
                         for (int i = 0; i < amount; i++)
@@ -101,7 +100,8 @@ namespace Goose3.NET
         }
         static void Main(string[] args)
         {
-            menu();            
+            menu();
+            Console.ReadKey();
         }
     }
 }

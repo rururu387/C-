@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Goose3.NET
 {
-    class MatrixC_
+    public class MatrixC_
     {
-        double[][] matrix;
-        public double[][] getMatrix()
+        public double[][] matrix;
+        /*public double[][] getMatrix()
         {
             return matrix;
-        }
+        }*/
         public int size
         {
             get;
@@ -19,11 +19,11 @@ namespace Goose3.NET
         {
             size = n;
             matrix = new double[size][];
+            Random rnd = new Random();
             for (int i = 0; i < size; i++)
             {
                 double []t_arr;
                 t_arr = new double[size];
-                Random rnd = new Random();
                 for (int j = 0; j < size; j++)
                     t_arr[j] = rnd.Next(0, 10000);
                 matrix[i] = t_arr;
@@ -37,18 +37,18 @@ namespace Goose3.NET
             {
                 matrix[i] = new double[size];
                 for (int j = 0; j < size; j++)
-                    matrix[i][j] = someMatrix.getMatrix()[i][j];
+                    matrix[i][j] = someMatrix.matrix[i][j];
             }
         }
         public MatrixC_()
         {
             size = 5;
             matrix = new double[size][];
+            Random rnd = new Random();
             for (int i = 0; i < size; i++)
             {
                 double[] t_arr;
                 t_arr = new double[size];
-                Random rnd = new Random();
                 for (int j = 0; j < size; j++)
                     t_arr[j] = rnd.Next(0, 10000);
                 matrix[i] = t_arr;
@@ -112,11 +112,12 @@ namespace Goose3.NET
                 rightValCpy[i] = rightVal[i];
             }
 
+            double mult = 0.0;
             for (int i = 0; i < size; i++)
             {
                 for (int j = i + 1; j < size; j++)
                 {
-                    double mult = matrixCpy[j][i] / matrixCpy[i][i];
+                    mult = matrixCpy[j][i] / matrixCpy[i][i];
                     for (int k = 0; k < size; k++)
                     {
                         matrixCpy[j][k] = matrixCpy[j][k] - matrixCpy[i][k] * mult;
@@ -125,22 +126,23 @@ namespace Goose3.NET
                 }
             }
 
+            double mult2 = 0.0;
             for (int i = size - 1; i >= 0; i--)
             {
                 for (int j = i - 1; j >= 0; j--)
                 {
-                    double mult = matrixCpy[j][i] / matrixCpy[i][i];
+                    mult2 = matrixCpy[j][i] / matrixCpy[i][i];
                     for (int k = 0; k < size; k++)
                     {
-                        matrixCpy[j][k] = matrixCpy[j][k] - matrixCpy[i][k] * mult;
+                        matrixCpy[j][k] = matrixCpy[j][k] - matrixCpy[i][k] * mult2;
                     }
-                    rightValCpy[j] = rightValCpy[j] - rightValCpy[i] * mult;
+                    rightValCpy[j] = rightValCpy[j] - rightValCpy[i] * mult2;
                 }
             }
 
             for (int i = 0; i < size; i++)
             {
-                if (matrixCpy[i][i] == 0)
+                if (matrixCpy[i][i] == 0 || Double.IsNaN(matrixCpy[i][i]))
                     throw new DivideByZeroException("Couldn't solve a system. It has 0 or infinite amount of solutions");
                 solve[i] = rightValCpy[i] / matrixCpy[i][i];
             }

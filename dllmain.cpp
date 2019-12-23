@@ -1,8 +1,8 @@
-п»ї#pragma once
-#include "pch.h"
+#pragma once
+#include "stdafx.h"
 #include "MyHeader.h"
 
-// dllmain.cpp : РћРїСЂРµРґРµР»СЏРµС‚ С‚РѕС‡РєСѓ РІС…РѕРґР° РґР»СЏ РїСЂРёР»РѕР¶РµРЅРёСЏ DLL.p;,
+// dllmain.cpp : Определяет точку входа для приложения DLL.p;,
 BOOL APIENTRY DllMain(HMODULE hModule,
 	DWORD  ul_reason_for_call,
 	LPVOID lpReserved
@@ -11,8 +11,9 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
+		std::cout << "Started c++ part! (Process)\n";
 	case DLL_THREAD_ATTACH:
-		std::cout << "Started c++ part!\n";
+		std::cout << "Started c++ part! (Thread)\n";
 	case DLL_THREAD_DETACH:
 	case DLL_PROCESS_DETACH:
 		break;
@@ -100,7 +101,7 @@ std::pair <double*, int> Matrix::solve(double rightVal[], int amount)
 		solvArr[i] = rightVal[i];
 	}
 
-	double** matrixCpy = new double* [size];
+	double** matrixCpy = new double*[size];
 	for (int i = 0; i < size; i++)
 	{
 		matrixCpy[i] = new double[size];
@@ -140,7 +141,7 @@ std::pair <double*, int> Matrix::solve(double rightVal[], int amount)
 	{
 		if (matrixCpy[i][i] == 0)
 		{
-		std::string str = "Couldn't solve a system. It has 0 or infinite amount of solutions";
+			std::string str = "Couldn't solve a system. It has 0 or infinite amount of solutions";
 			throw (str);
 		}
 		solvArr[i] = solvArr[i] / matrixCpy[i][i];
@@ -158,7 +159,7 @@ std::pair <double*, int> Matrix::solve(double rightVal[], int amount)
 Matrix::Matrix(double v11, double v12, double v13, double v21, double v22, double v23, double v31, double v32, double v33)
 {
 	size = 3;
-	matrix = new double* [size];
+	matrix = new double*[size];
 	double* t_row1 = new double[size];
 	double* t_row2 = new double[size];
 	double* t_row3 = new double[size];
@@ -195,7 +196,7 @@ double doubleRand(double min, double max)
 Matrix::Matrix(int n)
 {
 	size = n;
-	matrix = new double* [size];
+	matrix = new double*[size];
 	for (int i = 0; i < size; i++)
 	{
 		matrix[i] = new double[size];
